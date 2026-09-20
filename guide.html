@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Codex × Obsidian 图解 · 用一个旧项目开始</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --sub:#5a6470; --line:#e3e7ec; --bg:#f7f9fb; --card:#ffffff;
+    --brand:#2563eb; --brand-soft:#eef4ff; --ok:#0a7d4f; --ok-soft:#e8f6ef; --warn:#b45309; --warn-soft:#fdf3e3;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; color:var(--ink); background:var(--bg); line-height:1.75; font-size:16px;}
+  .wrap{max-width:720px; margin:0 auto; padding:20px 16px 64px;}
+  header{padding:28px 0 12px;}
+  h1{font-size:1.5rem; line-height:1.4;}
+  .tagline{color:var(--sub); margin-top:8px; font-size:.95rem;}
+  .meta{color:var(--sub); font-size:.8rem; margin-top:10px;}
+  h2{font-size:1.2rem; margin:36px 0 12px; padding-top:8px;}
+  h3{font-size:1.02rem; margin:18px 0 8px;}
+  p{margin:10px 0;}
+  ul,ol{padding-left:1.4em; margin:8px 0;}
+  li{margin:5px 0;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin:14px 0;}
+  .route{border-left:4px solid var(--brand); padding-left:14px; margin:12px 0;}
+  .route.main{border-color:var(--ok); background:var(--ok-soft); border-radius:0 10px 10px 0; padding:12px 14px;}
+  .route.alt{background:var(--card); border:1px solid var(--line); border-left:4px solid var(--brand); border-radius:0 10px 10px 0; padding:12px 14px;}
+  .badge{display:inline-block; font-size:.72rem; font-weight:600; border-radius:99px; padding:2px 10px; margin-right:6px; vertical-align:middle;}
+  .badge.ok{background:var(--ok-soft); color:var(--ok);}
+  .badge.blue{background:var(--brand-soft); color:var(--brand);}
+  .badge.warn{background:var(--warn-soft); color:var(--warn);}
+  .step{margin:26px 0;}
+  .step-head{display:flex; align-items:baseline; gap:8px; margin-bottom:8px;}
+  .step-no{flex:0 0 auto; width:28px; height:28px; border-radius:50%; background:var(--brand); color:#fff; font-size:.9rem; font-weight:700; display:flex; align-items:center; justify-content:center; align-self:center;}
+  .step-head h3{margin:0;}
+  .where{color:var(--sub); font-size:.88rem; margin:6px 0;}
+  .where b{color:var(--ink);}
+  .prompt{position:relative; background:#0f172a; color:#dbe4f0; border-radius:10px; padding:14px 12px 12px; margin:10px 0;}
+  .prompt pre{white-space:pre-wrap; word-break:break-word; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.82rem; line-height:1.65; user-select:text; -webkit-user-select:text;}
+  .copybar{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:8px;}
+  .copybar span{font-size:.72rem; color:#8fa3bd;}
+  .copybtn{flex:0 0 auto; background:var(--brand); border:none; color:#fff; font-size:.78rem; padding:5px 12px; border-radius:7px; cursor:pointer;}
+  .copybtn:active{opacity:.8;}
+  .copymsg{font-size:.72rem; color:#fbbf24; margin-top:6px; display:none;}
+  .expect{background:var(--ok-soft); border-radius:10px; padding:10px 14px; margin:10px 0; font-size:.92rem;}
+  .expect b{color:var(--ok);}
+  .check{background:var(--warn-soft); border-radius:10px; padding:10px 14px; margin:10px 0; font-size:.92rem;}
+  .check b{color:var(--warn);}
+  code{background:#eef1f5; border-radius:5px; padding:1px 6px; font-size:.86em; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  .prompt code{background:transparent; color:inherit; padding:0;}
+  pre.plain{background:#eef1f5; border-radius:10px; padding:12px 14px; overflow-x:auto; font-size:.8rem; line-height:1.6; user-select:text; -webkit-user-select:text;}
+  .fict{font-size:.78rem; color:var(--sub); background:var(--card); border:1px dashed var(--line); border-radius:8px; padding:8px 12px; margin:10px 0;}
+  .limit{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; font-size:.92rem;}
+  .limit b{color:var(--warn);}
+  footer{margin-top:44px; color:var(--sub); font-size:.8rem; border-top:1px solid var(--line); padding-top:16px;}
+  @media (max-width:480px){
+    body{font-size:15px;}
+    .wrap{padding:14px 12px 48px;}
+    h1{font-size:1.3rem;}
+    .step-no{width:24px; height:24px; font-size:.8rem;}
+    .copybtn{padding:7px 14px;}
+  }
+  @media print{ .copybtn{display:none;} body{background:#fff;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Codex × Obsidian 图解<br>用一个旧项目开始</h1>
+  <p class="tagline">适合已把 Obsidian 和 Codex 连在同一个文件夹的用户。不重装、不重建,走完一个真实循环:确认知识库 → 整理一个旧项目 → 补充背景与规则 → 新任务验证资料真的被读到。</p>
+  <p class="meta">Codex Obsidian Bridge 配套离线图解 · 全部示例均为<b>虚构演示</b> · 打印或转发请随意</p>
+</header>
+
+<h2>〇 · 三个动作,先分清</h2>
+<div class="card">
+  <ul>
+    <li><b>下载本仓库</b> = 拿到教程和模板。<b>不等于</b>导入你的知识库。</li>
+    <li><b>用 Obsidian 打开你的资料文件夹</b> = 查看、整理你的笔记。</li>
+    <li><b>用 Codex 打开同一个文件夹</b> = 在明确范围内读取、整理、生成文件。</li>
+  </ul>
+  <p style="margin-bottom:0">三个动作指向<b>同一个文件夹</b>,才算打通。模板复制进已有库时,<b>已有文件不要覆盖</b>。</p>
+</div>
+
+<div class="route main"><span class="badge ok">主入口 · 已连接用户</span><br><b>我已经把 Obsidian 和 Codex 连在同一个文件夹了</b>——从下面的步骤 1 直接开始。</div>
+<div class="route alt"><span class="badge blue">还没连接?</span> 先看仓库里 <b>docs/02-30分钟上手.md</b>(安装、指向同一文件夹、测试笔记回读),完成后再回到这里。</div>
+
+<h2>确认循环走通的终点</h2>
+<p>不以"建好文件夹"为成功,而以这一幕为成功:<b>新开一个 Codex 任务,它根据你保存的资料说清项目现状、指出依据,并且你能核对。</b></p>
+
+<!-- ============ 步骤 1 ============ -->
+<div class="step">
+  <div class="step-head"><div class="step-no">1</div><h3>确认知识库位置与现状</h3></div>
+  <p class="where"><b>在哪里操作:</b>Codex,现有知识库对应的会话。<b>做什么:</b>把路径钉死,只看一层结构,不猜、不创建。</p>
+  <div class="prompt">
+    <div class="copybar"><span>可复制 · 发给 Codex</span><button class="copybtn" type="button">复制</button></div>
+<pre>请先不要创建或修改任何文件。告诉我:
+1. 你当前的工作目录完整路径;
+2. 这个目录下一层有哪些文件夹和文件(只列一层);
+3. 根目录有没有 AGENTS.md、首页.md 或类似导航文件。
+如果工作目录不是我指的知识库,请停在这里,告诉我你看到的路径,等我确认后再继续。</pre>
+    <div class="copymsg">自动复制不可用?没关系——上面的文字可以直接选中,长按(手机)或拖选(电脑)后手动复制。</div>
+  </div>
+  <div class="expect"><b>应该看到:</b>正确路径 + 一层目录清单 + 是否已有规则文件。路径不对就不要往下走,回 Codex 的文件夹选择处重新指向。</div>
+</div>
+
+<!-- ============ 步骤 2 ============ -->
+<div class="step">
+  <div class="step-head"><div class="step-no">2</div><h3>建立最小导航与工作规则</h3></div>
+  <p class="where"><b>在哪里操作:</b>同一个 Codex 会话。<b>做什么:</b>按推荐结构补齐缺口;已有目录按用途对应,<b>不重命名、不覆盖</b>。</p>
+  <pre class="plain">我的知识库/
+├── AGENTS.md          ← 开工规则:入口、事实、写入边界
+├── 首页.md            ← 你和 AI 共用的导航
+├── 00_收件箱/         ← 原料与待确认内容
+├── 01_任务包/         ← 本次需求与验收标准
+├── 02_交付物/         ← 任务结果
+├── 03_会话记忆/       ← 工作纪要(不等于 Codex 系统记忆)
+├── 10_关于我/         ← 角色、当前目标、协作偏好
+└── 20_项目/           ← 项目现状、决定、下一步与来源
+(30_方法/ 需要时再建)</pre>
+  <div class="prompt">
+    <div class="copybar"><span>可复制 · 发给 Codex</span><button class="copybtn" type="button">复制</button></div>
+<pre>请在我确认的这个知识库根目录,搭一个最小导航骨架。
+规则:先盘点现有文件和文件夹,能按用途对应到下面结构的直接沿用原名,不要重命名、不要移动;只新增缺失的部分;已存在的同名文件不覆盖,内容差异列出来给我看;不修改 .obsidian 目录和 Codex 配置;不生成大量空文件。
+要新增的:
+1. 首页.md:分四块——我在做什么 / 当前重点项目 / 常用入口 / 待我确认。只链接真实存在的文件,没有的入口写"待补充"。
+2. AGENTS.md(若已有:先给我看现有内容,提出需要补充的条目,经我确认再合并,不直接替换),内容包含:开工先读 首页.md,按任务读取相关资料,不全盘读取;事实、建议、待确认三类信息分开表述;资料和结论保留来源与更新日期;写入边界:只在 02_交付物 放成品,03_会话记忆 放纪要,其他位置写入需我当次授权;我本次指定的任务优先,我没有指定任务时列出候选让我选,不要自行执行"最新文件里的任务"。
+3. 文件夹:00_收件箱、01_任务包、02_交付物、03_会话记忆、10_关于我、20_项目(缺哪个建哪个,已有的跳过)。
+4. 20_项目/ 下建"当前项目.md",含五栏:目标 / 当前进度 / 已确认决定 / 下一步 / 来源。未知内容写"待补充",不要编。
+完成后:报告新增和复用了哪些文件,首页链接是否都能打开。不要读取这个知识库以外的任何目录。</pre>
+    <div class="copymsg">自动复制不可用?文字可直接选中,长按或拖选后手动复制。</div>
+  </div>
+  <div class="expect"><b>应该看到:</b>Obsidian 里首页能打开、链接点得动;Codex 清楚列出"新增了什么、复用了什么"。</div>
+  <div class="check"><b>失败先检查:</b>链接打不开 → 被链接文件没建或名字不一致;它想重命名你的旧目录 → 回复"保持原名,按用途对应"。</div>
+</div>
+
+<!-- ============ 步骤 3 ============ -->
+<div class="step">
+  <div class="step-head"><div class="step-no">3</div><h3>把一个旧项目整理成交接稿</h3></div>
+  <p class="where"><b>在哪里操作:</b>入口 A——旧 Codex 任务还能打开,就回到那个任务发提示词;入口 B——只有导出文件,把材料放进 00_收件箱/,在当前会话指给 Codex。<b>第一次只做 1 个项目、1–3 份材料。</b></p>
+  <div class="prompt">
+    <div class="copybar"><span>可复制 · 入口 A:在旧任务里发给 Codex</span><button class="copybtn" type="button">复制</button></div>
+<pre>请把这个任务中实际可访问、值得保留的内容,整理成一份 Markdown 交接稿。
+先说明你能看到的消息、摘要和文件的范围,以及看不到哪些部分。
+正文按此结构:任务目标 / 来源与可见范围 / 已核实事实 / 我明确确认过的决定及理由 / 实际成果与所在位置 / 未完成项 / 下一步 / 来源与日期。
+要求:区分四种状态:提出过、我已确认、已执行、已验收。你当时说"完成"但没有证据的,一律标"待核实";冲突的信息并列列出,不替我选边;不补写缺失的历史,不添加你推测的内容;不要声称"导出了全部历史"。
+只输出 Markdown 正文,先不要写文件。</pre>
+    <div class="copymsg">自动复制不可用?文字可直接选中,长按或拖选后手动复制。</div>
+  </div>
+  <div class="prompt">
+    <div class="copybar"><span>可复制 · 入口 B:在当前知识库会话发给 Codex</span><button class="copybtn" type="button">复制</button></div>
+<pre>请只读取 00_收件箱/ 里我指定的这几份文件(文件名:……),按交接稿结构整理:
+任务目标 / 来源与可见范围 / 已核实事实 / 已确认决定及理由 / 实际成果与位置 / 未完成项 / 下一步 / 来源与日期。
+材料里没有的信息写"来源中未见",不要推测补齐;冲突内容并列呈现。先输出给我看,不写文件。</pre>
+    <div class="copymsg">自动复制不可用?文字可直接选中,长按或拖选后手动复制。</div>
+  </div>
+  <p class="fict">虚构示例:交接稿里应出现这样的句子——"客户要求改期为【我已确认,09-12 电话】;降价方案仅【提出过,未确认】;早期沟通记录不可见【缺失】"。有这种标注,才是可信的交接稿。</p>
+  <div class="check"><b>失败先检查:</b>它开始编细节 → 重申"来源中未见的信息留空";它想顺手扫描别的历史 → 拒绝,范围只有你指定的文件。</div>
+</div>
+
+<!-- ============ 步骤 4 ============ -->
+<div class="step">
+  <div class="step-head"><div class="step-no">4</div><h3>补充"关于我"与运行规则</h3></div>
+  <p class="where"><b>在哪里操作:</b>当前知识库会话。<b>做什么:</b>个人说明先答三个问题,其余留"待补充"。<b>分工:规矩进 AGENTS.md,背景是普通笔记,别混在一起。</b></p>
+  <ul>
+    <li>我目前的角色和业务是什么?</li>
+    <li>当前最重要的目标是什么?</li>
+    <li>我希望 AI 怎样与我协作?哪些事必须由我确认?</li>
+  </ul>
+  <div class="prompt">
+    <div class="copybar"><span>可复制 · 发给 Codex</span><button class="copybtn" type="button">复制</button></div>
+<pre>请在 10_关于我/ 新建"个人说明.md"(已有则先给我看现状,只补缺失的三块):
+1. 我的角色与业务;
+2. 当前最重要的目标;
+3. 我希望的协作方式,以及必须由我确认的事项。
+只写我下面提供的内容,不要猜测或补写我的经历、客户、业绩:
+(在这里用你自己的话写三点的答案,写多少算多少,其余保留"待补充")</pre>
+    <div class="copymsg">自动复制不可用?文字可直接选中,长按或拖选后手动复制。</div>
+  </div>
+</div>
+
+<!-- ============ 步骤 5 ============ -->
+<div class="step">
+  <div class="step-head"><div class="step-no">5</div><h3>确认后,形成项目入口</h3></div>
+  <p class="where"><b>在哪里操作:</b>当前知识库会话。<b>做什么:</b>先看差异 → 你确认 → 再写入 20_项目/。</p>
+  <div class="prompt">
+    <div class="copybar"><span>可复制 · 发给 Codex</span><button class="copybtn" type="button">复制</button></div>
+<pre>请基于 00_收件箱/ 里的交接稿(文件名:……),更新 20_项目/当前项目.md。
+分两步:
+1. 先输出"拟变更清单":每个栏目填什么、依据交接稿哪一段、与现有内容有无冲突,先不要写文件;
+2. 我确认后再写入。
+要求:项目页要能回答——在做什么、目前进度、哪些决定已确认、下一步、依据在哪个文件、更新时间;交接稿里"待核实"的内容进入项目页时保持"待核实",不要洗成"已确认";新旧内容冲突时两个说法都保留并标注,不默认最新说法就是最终决定;写入前把现有"当前项目.md"复制一份到 03_会话记忆/ 留底(文件名加"-备份-日期")。</pre>
+    <div class="copymsg">自动复制不可用?文字可直接选中,长按或拖选后手动复制。</div>
+  </div>
+  <div class="expect"><b>应该看到:</b>20_项目/当前项目.md 更新,来源指向收件箱的交接稿,首页"当前重点项目"链接着它。</div>
+  <div class="check"><b>失败先检查:</b>"待核实"被写成定论 → 退回重写;没留备份 → 从 03_会话记忆/ 的副本恢复。</div>
+</div>
+
+<!-- ============ 步骤 6 ============ -->
+<div class="step">
+  <div class="step-head"><div class="step-no">6</div><h3>新开一个任务,验证资料真的被读到</h3></div>
+  <p class="where"><b>在哪里操作:</b>同一知识库目录下的 Codex <b>新任务</b>(不是原会话——新会话才证明背景来自文件,不是聊天记录)。<b>验收时不要把答案贴在问题里</b>,否则只能证明它会复述。</p>
+  <div class="prompt">
+    <div class="copybar"><span>可复制 · 在新任务发给 Codex</span><button class="copybtn" type="button">复制</button></div>
+<pre>这是一个新任务。请先读取本知识库的 首页.md 和生效的 AGENTS.md,再读 20_项目/ 下与我问题相关的项目页,然后回答:
+问题:(例如:XX 项目现在进行到哪一步?下一步该做什么?)
+回答时列出:
+1. 你实际读取了哪些文件(完整路径);
+2. 项目目标与目前状态;
+3. 哪些决定已经确认、哪些还待核实;
+4. 下一步是什么;
+5. 每个判断依据哪个文件;
+6. 哪些信息仍然缺失。
+这一轮只读不写。不要用"我记得"代替文件来源,不要为了回答而读取整个知识库。</pre>
+    <div class="copymsg">自动复制不可用?文字可直接选中,长按或拖选后手动复制。</div>
+  </div>
+  <div class="expect"><b>怎么判断它真读了文件:</b>① 它列的路径真实存在,你去 Obsidian 点开核对;② 它引用的细节只在你文件里出现过,你从没在这次对话里说过;③ 答不完整也算通过——只要它准确指出"缺什么"。</div>
+</div>
+
+<!-- ============ 步骤 7 ============ -->
+<div class="step">
+  <div class="step-head"><div class="step-no">7</div><h3>以后每次怎么用</h3></div>
+  <div class="card" style="margin-top:6px">
+    <ol style="margin-bottom:0">
+      <li><b>开工:</b>让 AI 读首页和指定项目页;</li>
+      <li><b>干活:</b>需求写进 01_任务包/,成品出在 02_交付物/,命名 <code>YYYY-MM-DD-名称.md</code>,<b>同名不覆盖</b>;</li>
+      <li><b>收尾:</b>纪要进 03_会话记忆/,AI 提议项目页更新哪些栏目;</li>
+      <li><b>你确认后</b>更新项目页;长期规则经你确认后更新 AGENTS.md。</li>
+    </ol>
+  </div>
+  <p>每周十分钟问一次:哪些项目页过时了?哪些纪要里反复出现同一个坑(该进 AGENTS.md 了)?没有新证据就不必为了更新而改。</p>
+</div>
+
+<h2>诚实版:这套方法做不到什么</h2>
+<div class="limit">
+  <ul style="margin-bottom:0">
+    <li><b>不自动导入历史:</b>旧项目需要你选择、整理、核对;不扫描、不承诺完整导出任何历史记录。</li>
+    <li><b>不训练模型:</b>整理资料不会让模型"学会"你;AI 的表现来自每次开工读了哪些文件。</li>
+    <li><b>本地保存 ≠ 全程离线:</b>笔记存在你选择的本地文件夹;使用云端模型时,被读取的内容会作为上下文发送给模型服务,发送范围由你授权。</li>
+    <li><b>行为约定 ≠ 技术隔离:</b>AGENTS.md 里的敏感目录规则约束的是工作流程;高度敏感材料建议不放入 AI 可及的知识库。</li>
+  </ul>
+</div>
+
+<h2>卡住时先查这几件事</h2>
+<div class="card">
+  <ul style="margin-bottom:0">
+    <li><b>Codex 写了文件,Obsidian 看不到:</b>对比两边完整路径;核对是否打开了另一个同名库;必要时重新打开仓库,不用急着重装。</li>
+    <li><b>新任务又要重讲背景:</b>确认它从知识库根目录启动、真的读了首页与 AGENTS.md、首页链接有效。</li>
+    <li><b>回答不准:</b>打开它引用的来源逐句核对;"待确认"被说成"已决定"就退回。</li>
+  </ul>
+</div>
+
+<footer>
+  Codex Obsidian Bridge · <b>guide.html</b>(离线版,可直接转发)<br>
+  同一教程的可编辑 Markdown:仓库 docs/06-用一个旧项目开始.md · 模板:templates/<br>
+  本文件全部示例为虚构演示,不代表任何真实客户或项目 · 官方产品能力以 OpenAI / Obsidian 当前文档为准
+</footer>
+
+</div>
+<script>
+(function(){
+  function fallbackMsg(box){ var m=box.querySelector('.copymsg'); if(m){ m.style.display='block'; } }
+  function legacyCopy(text, box){
+    var ta=document.createElement('textarea');
+    ta.value=text; ta.setAttribute('readonly','');
+    ta.style.position='fixed'; ta.style.top='-1000px';
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+    var ok=false;
+    try{ ok=document.execCommand('copy'); }catch(e){ ok=false; }
+    document.body.removeChild(ta);
+    if(!ok){ fallbackMsg(box); }
+    return ok;
+  }
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var box=btn.closest('.prompt');
+      var pre=box?box.querySelector('pre'):null;
+      if(!pre){ return; }
+      var text=pre.innerText;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){
+          btn.textContent='已复制 ✓';
+          setTimeout(function(){ btn.textContent='复制'; },2000);
+        }).catch(function(){
+          legacyCopy(text, box);
+        });
+      }else{
+        if(legacyCopy(text, box)){ btn.textContent='已复制 ✓'; setTimeout(function(){ btn.textContent='复制'; },2000); }
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
